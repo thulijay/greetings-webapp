@@ -1,0 +1,10 @@
+<div class="greetings">
+    <h1>Greeted Names</h1>
+    <ul>
+        {{#each names}}
+        <a href="/counter/{{@key}}">
+            <li>{{@this.key}}</li>
+        </a>
+        {{/each}}
+    </ul>
+</div>
