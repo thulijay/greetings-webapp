@@ -4,16 +4,27 @@
   "description": "",
   "main": "index.js",
   "directories": {
-    "test": "test"
+    "test": "test",
+    "start: node index.js"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
-    "express-handlebars": "^5.1.0"
+    "express-handlebars": "^5.1.0",
+    "express-session": "^1.17.1",
+    "flash-express": "^1.0.4"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "mocha"
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thulijay/greetings-wepapp.git"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thulijay/greetings-wepapp/issues"
+  },
+  "homepage": "https://github.com/thulijay/greetings-wepapp#readme"
 }
