@@ -1,16 +1,17 @@
 {
   "name": "greetings-wepapp",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "directories": {
     "test": "test"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
-    "flash-express": "^1.0.4",
+    "express": "^4.17.1",
+    "express-flash": "0.0.2",
     "express-handlebars": "^5.1.0",
-    "express-session": "^1.17.1"
+    "express-session": "^1.17.1",
+    "flash-express": "^1.0.4"
   },
   "devDependencies": {},
   "scripts": {
@@ -25,5 +26,6 @@
   "bugs": {
     "url": "https://github.com/thulijay/greetings-wepapp/issues"
   },
-  "homepage": "https://github.com/thulijay/greetings-wepapp#readme"
+  "homepage": "https://github.com/thulijay/greetings-wepapp#readme",
+  "description": ""
 }
