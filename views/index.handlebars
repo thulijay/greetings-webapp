@@ -1,32 +1,23 @@
-{{#if messages.info}}
-<div class="flash">
-  <div class="entry">
-    <h3>{{messages.info}}</h3>
-  </div>
-</div>
-{{/if}}
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="greetings.css">
-
+  {{!-- <link rel="stylesheet" href="../public/CSS/greetings.css"> --}}
   <title>Greetings</title>
+
 </head>
+
 <body>
-<form action="/" method="POST">
-  <div class="">
-    <div class="top">
-      <h1>Greetings</h1>
+  <form action="/" method="POST">
+    <div class="">
+      <div class="top">
+        <h1>Greetings</h1>
       </div>
-       <div class="">
+      <div class="">
         <label class="">
-          <input type="radio" name="solidGreet" class="greetRadio" value="English">
+          <input type="radio" name="solidGreet" class="greetRadio" value="English" checked>
           <span class="">English</span>
         </label>
 
@@ -40,29 +31,35 @@
           <span class="">Dutch</span>
         </label>
       </div>
-      
+
       <div class="bottom">
-        <input class="enterName" type="text" name="enterUser" placeholder="enter your name here" onfocus="this.value = ''">
+        <input class="enterName" type="text" name="enterUser" placeholder="enter your name here"
+          onfocus="this.value = ''">
         <span class="greetCount">{{count}}</span>
       </div>
 
-      <button class="button-primary langButton" type="submit"  name="langBtn" >Click Here</button>
-      <button class="restBtn" type="button" name="langBtn">Reset</button>
+      <button class="button-primary langButton" type="submit" name="langBtn">Click Here</button>
+      <button class="restBtn" type="button" name="langBtn"><a href="/reset">Reset</a></button>
 
 
       <div class="hgreet">
       </div>
-      </form>
+  </form>
 
-      <div class="greetClass">
-        {{message}}
-      </div>
-              <a href="/greeted">Greeted Names</a>
+  <div class="greetClass">
+    {{message}}
+  </div>
+  <a href="/greeted">Greeted Names</a>
 
-    </div>
-     
-     
- <!-- <script src="greet-factory.js"></script>
-  <script src="greet.js"></script> -->
+  </div>
+
+  {{!-- {{#if messages.info}}
+  <div class="entry">
+    <h3>{{messages.info}}</h3>
+</div>
+{{/if}} --}}
+  <h2>{{messages.error}}</h2>
+
 </body>
+
 </html>
