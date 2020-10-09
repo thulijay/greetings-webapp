@@ -16,25 +16,15 @@ const pool = new Pool({ //a connection pool
 const greetings = require('./greetings-factory');
 const greetingEntry = greetings(pool);
 
-//const handlebarSetup = exphbs({
-// viewPath:  './views/main',
-//layoutsDir : './views/layouts'
-//});
-
-//app.engine('handlebars', handlebarSetup);
-
 // initialise session middleware - flash-express depends on it
 app.use(session({
   secret: "<add a secret string here>",
   resave: false,
   saveUninitialized: true
 }));
+
 // initialise the flash middleware
 app.use(flash());
-
-// app.get('/', function (req, res) {
-//  req.flash('info', 'Flash Message Added');
-// res.redirect('/');
 
 app.engine('handlebars', exhbs({ defaultLayout: 'main' }));
 
@@ -48,10 +38,6 @@ app.use(bodyParser.json());
 
 app.get('/', async function (req, res) {
   let count = await greetingEntry.getData();
-
-  // console.log({count});
-  
-
   res.render('index');
 })
 
@@ -60,88 +46,49 @@ app.get('/addFlash', function (req, res) {
   res.redirect('/');
 });
 
-app.get('/greeted', async function(req, res){
+app.get('/greeted', async function (req, res) {
   const usersWait = await greetingEntry.getData();
-  console.log({usersWait: usersWait.rows})
-    res.render('greeted',{  names : usersWait.rows, count: 1} ); 
+  console.log({ usersWait: usersWait.rows })
+  res.render('greeted', { names: usersWait.rows, count: 1 });
 
 })
 
-app.get('/counter/:username', async function(req, res){
-let userGreet = req.params.username;
-let namesList =  await greetingEntry.getUser(userGreet);
-const user = namesList.rows[0];
-console.log({user});
+app.get('/counter/:username', async function (req, res) {
+  let userGreet = req.params.username;
+  let namesList = await greetingEntry.getUser(userGreet);
+  const user = namesList.rows[0];
+  console.log({ user });
 
-let counterMsg = "Hi, " + user.user_name + " you have been greeted " + user.user_count + " times"
-res.render('counter', {message : counterMsg})
+  let counterMsg = "Hi, " + user.user_name + " you have been greeted " + user.user_count + " times"
+  res.render('counter', { message: counterMsg })
 })
-
 
 app.post('/', async function (req, res) {
   let greetingsX = req.body.enterUser;
   let solidGreet = req.body.solidGreet;
 
   var msg = greetingEntry.alertUser(greetingsX, solidGreet);
- 
-
 
   if (msg === undefined) {
-    req.flash('error',"please make sure you've entered your name")
+    req.flash('error', "please make sure you've entered your name")
   }
 
   const message = await greetingEntry.greetWorkFlow(greetingsX, solidGreet)
 
-  // const result =  await greetingEntry.greetWorkFlow(greetingsX, solidGreet)
-
-  // console.log({result});
-  
   let count = await greetingEntry.getData();
-  // console.log(count);
 
-count = count.rowCount 
+  count = count.rowCount
 
   res.render('index', {
     message,
     count
-    // errorMessage: msg
-  //  count: greetingEntry.insertData()
-
-
-
   })
 })
 
-app.get("/reset",async function(req,res){
+app.get("/reset", async function (req, res) {
   await greetingEntry.deleteUsers();
-res.redirect("/")
+  res.redirect("/")
 })
-
-
-
-
-// app.get("/greeted", async function (req, res) {
-//   const names = await greet.getNames()
-//   res.render("actions", {
-//     keyName: names
-//   })
-// })
-
-
-
-
-// app.get('/counter/:username', async function(req, res) {
-//   let userName = req.params.user_name;
-//   // if (userName && userName !== '') {
-//       // await pool.query('insert into users (user_name, user_count) values ($1, $2)' , [userName, 1]);    
-
-//   res.render('greeted',{
-//     key:.greetingEntry.getData()
-//   })
-
-//   // res.redirect('/');
-//   console.log('userName')
-// });
 
 const PORT = process.env.PORT || 1102;
 app.listen(PORT, function () {
