@@ -69,7 +69,7 @@ app.post('/', async function (req, res) {
 
   var msg = greetingEntry.alertUser(greetingsX, solidGreet);
 
-  if (msg === undefined) {
+  if (msg === '') {
     req.flash('error', "please make sure you've entered your name")
   }
 
@@ -94,3 +94,4 @@ const PORT = process.env.PORT || 1102;
 app.listen(PORT, function () {
   console.log('App started at:', PORT);
 });
+
