@@ -36,8 +36,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(bodyParser.json());
 
-app.get('/', async function (req, res) {
-  let count = await greetingEntry.getData();
+app.get('/', function (req, res) {
+ // let count = await greetingEntry.getData();
   res.render('index');
 })
 
