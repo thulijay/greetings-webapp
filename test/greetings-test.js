@@ -1,5 +1,5 @@
 const assert = require('assert');
-const greetings = require('./greetings-factory');
+const greetings = require('../greetings-factory');
 const pg =require('pg');
 const Pool = pg.Pool;
 
