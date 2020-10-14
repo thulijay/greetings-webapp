@@ -41,6 +41,10 @@ app.get('/', function (req, res) {
   res.render('index');
 })
 
+// app.get('/', function (req, res) {
+// 	res.render('main');
+// })
+
 app.get('/addFlash', function (req, res) {
   req.flash('info', 'Flash Message Added');
   res.redirect('/');
@@ -69,9 +73,9 @@ app.post('/', async function (req, res) {
 
   var msg = greetingEntry.alertUser(greetingsX, solidGreet);
 
-  if (msg === '') {
-    req.flash('error', "please make sure you've entered your name")
-  }
+  if (msg !== undefined) {
+    req.flash('error', "please make sure you have entered your name")
+  } 
 
   const message = await greetingEntry.greetWorkFlow(greetingsX, solidGreet)
 
@@ -90,7 +94,7 @@ app.get("/reset", async function (req, res) {
   res.redirect("/")
 })
 
-const PORT = process.env.PORT || 1102;
+const PORT = process.env.PORT || 3101;
 app.listen(PORT, function () {
   console.log('App started at:', PORT);
 });
