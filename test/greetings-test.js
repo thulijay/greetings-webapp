@@ -3,9 +3,9 @@ const greetings = require('../greetings-factory');
 const pg =require('pg');
 const Pool = pg.Pool;
 
-const INSERT_QUERY = 'insert into users(user_name, user_count) values ($1, $2)';
+const INSERT_QUERY = 'insert into identity(user_name, user_count) values ($1, $2)';
 
-const connectionString = process.env.DATABASE_URL || 'postgresql://melissa:pg123@localhost:5432/users';
+const connectionString = process.env.DATABASE_URL || 'postgresql://postgres:pg123@localhost:5432/identity';
 
 const pool = new pg.Pool({
     connectionString
@@ -53,10 +53,6 @@ describe('Greetings-Webapp Tests', function(){
         beforeEach(async function(){
             await pool.query('delete from identity;');
         });
-    
-  
-    
-
 
     it('should be able to reset data', async function(){
         await pool.query(INSERT_QUERY, ['kim', 1]);
