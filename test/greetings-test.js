@@ -76,14 +76,12 @@ describe('Greetings-Webapp Tests', function(){
     it('should be able to greet user in English', async function(){
         const INSERT_QUERY = 'insert into users(user_name) values ($1)';
 
-        let language = "English";
+        await pool.query(INSERT_QUERY, ['kim']);
 
-        await pool.query(INSERT_QUERY, ['kim'], language);
+        let language = "English";
 
         const returnDb = await pool.query('select count (*) from users');
 
-        assert.equal(0, returnDb.rows[0].count);
+        assert.equal('kim'[language], returnDb.rows.count);
     })
-
-    it('')
 })
