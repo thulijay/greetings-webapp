@@ -4,11 +4,11 @@ env:
   - DATABASE_URL=postgresql://postgres@localhost:5432/identity
 
 node_js:  
-  - "8.9.4"
+  - "12"
 
 before_script:
   - psql -c 'create database  identity;' -U postgres
-  - psql -U postgres -d identity -a -f users.sql
+  - psql -U postgres -d identity -a -f iden.sql
 
 services:
   - postgresql
