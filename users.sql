@@ -1,1 +1,5 @@
-create table users (id serial primary key, user_name text not null, user_count int not null);
+create table users(
+	id serial not null primary key,
+	user_name text,
+	user_count int
+);
