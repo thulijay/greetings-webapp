@@ -1,14 +1,14 @@
 language: node_js
 
 env:
-  - DATABASE_URL=postgresql://postgres@localhost:5432/greetings-test
+  - DATABASE_URL=postgresql://postgres@localhost:5432/identity
 
 node_js:  
   - "8.9.4"
 
 before_script:
-  - psql -c 'create database  greetings-test;' -U postgres
-  - psql -U postgres -d greetings-test -a -f users.sql
+  - psql -c 'create database  identity;' -U postgres
+  - psql -U postgres -d identity -a -f users.sql
 
 services:
   - postgresql
