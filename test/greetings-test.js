@@ -83,5 +83,6 @@ describe('Greetings-Webapp Tests', function(){
         const returnDb = await pool.query('select count (*) from users');
 
         assert.equal('kim'[language], returnDb.rows.count);
+
     })
 })
