@@ -17,7 +17,7 @@
       </div>
       <div class="">
         <label class="">
-          <input type="radio" name="solidGreet" class="greetRadio" value="English" checked>
+          <input type="radio" name="solidGreet" class="greetRadio" value="English">
           <span class="">English</span>
         </label>
 
@@ -37,8 +37,13 @@
           onfocus="this.value = ''">
         <span class="greetCount">{{count}}</span>
       </div>
-
+  
+      <br>
+      <br>
       <button class="button-primary langButton" type="submit" name="langBtn">Click Here</button>
+      <br>
+      <br>
+      <br>
       <button class="restBtn" type="button" name="langBtn"><a href="/reset">Reset</a></button>
 
 
@@ -49,9 +54,11 @@
   <div class="greetClass">
     {{message}}
   </div>
+  
   <a href="/greeted">Greeted Names</a>
 
   </div>
+  
   <h2>{{messages.error}}</h2>
 
 </body>

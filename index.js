@@ -70,14 +70,28 @@ app.get('/counter/:username', async function (req, res) {
 app.post('/', async function (req, res) {
   let greetingsX = req.body.enterUser;
   let solidGreet = req.body.solidGreet;
+  let message='';
 
-  var msg = greetingEntry.alertUser(greetingsX, solidGreet);
+  // var msg = await greetingEntry.alertUser(greetingsX, solidGreet);
+  // if (msg !== '') {
+  //   req.flash('error', "please make sure you have entered your name")
+  // } else{
+  // }
+  if(greetingsX == '' && solidGreet === undefined){
+    req.flash ('error','select a language & enter your name');
 
-  if (msg !== undefined) {
-    req.flash('error', "please make sure you have entered your name")
-  } 
+    // console.log(greetingsX)
+}
+ else if(greetingsX == '' ){
+    req.flash  ('error','enter your name');
+}
+ else if( solidGreet === undefined){
+    req.flash ('error','select language');
+}
+else{
+  message= await greetingEntry.greetWorkFlow(greetingsX, solidGreet)
 
-  const message = await greetingEntry.greetWorkFlow(greetingsX, solidGreet)
+}
 
   let count = await greetingEntry.getData();
 
@@ -98,4 +112,3 @@ const PORT = process.env.PORT || 3101;
 app.listen(PORT, function () {
   console.log('App started at:', PORT);
 });
-
