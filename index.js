@@ -14,7 +14,9 @@ const pool = new Pool({ //a connection pool
 
 
 const greetings = require('./greetings-factory');
+const routesGreeting = require('./routes')
 const greetingEntry = greetings(pool);
+const greetingsR = routesGreeting(greetingEntry)
 
 // initialise session middleware - flash-express depends on it
 app.use(session({
@@ -36,77 +38,17 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(bodyParser.json());
 
-app.get('/', function (req, res) {
- // let count = await greetingEntry.getData();
-  res.render('index');
-})
+app.get('/', greetingsR.homeRoute)
 
-// app.get('/', function (req, res) {
-// 	res.render('main');
-// })
+app.get('/addFlash', greetingsR.addedFlash)
 
-app.get('/addFlash', function (req, res) {
-  req.flash('info', 'Flash Message Added');
-  res.redirect('/');
-});
+app.get('/greeted', greetingsR.userCount)
 
-app.get('/greeted', async function (req, res) {
-  const usersWait = await greetingEntry.getData();
-  console.log({ usersWait: usersWait.rows })
-  res.render('greeted', { names: usersWait.rows, count: 1 });
+app.get('/counter/:username', greetingsR.personsCount)
 
-})
+app.post('/', greetingsR.flashMsg)
 
-app.get('/counter/:username', async function (req, res) {
-  let userGreet = req.params.username;
-  let namesList = await greetingEntry.getUser(userGreet);
-  const user = namesList.rows[0];
-  console.log({ user });
-
-  let counterMsg = "Hi, " + user.user_name + " you have been greeted " + user.user_count + " times"
-  res.render('counter', { message: counterMsg })
-})
-
-app.post('/', async function (req, res) {
-  let greetingsX = req.body.enterUser;
-  let solidGreet = req.body.solidGreet;
-  let message='';
-
-  // var msg = await greetingEntry.alertUser(greetingsX, solidGreet);
-  // if (msg !== '') {
-  //   req.flash('error', "please make sure you have entered your name")
-  // } else{
-  // }
-  if(greetingsX == '' && solidGreet === undefined){
-    req.flash ('error','select a language & enter your name');
-
-    // console.log(greetingsX)
-}
- else if(greetingsX == '' ){
-    req.flash  ('error','enter your name');
-}
- else if( solidGreet === undefined){
-    req.flash ('error','select language');
-}
-else{
-  message= await greetingEntry.greetWorkFlow(greetingsX, solidGreet)
-
-}
-
-  let count = await greetingEntry.getData();
-
-  count = count.rowCount
-
-  res.render('index', {
-    message,
-    count
-  })
-})
-
-app.get("/reset", async function (req, res) {
-  await greetingEntry.deleteUsers();
-  res.redirect("/")
-})
+app.get("/reset", greetingsR.resetUsers)
 
 const PORT = process.env.PORT || 3101;
 app.listen(PORT, function () {
