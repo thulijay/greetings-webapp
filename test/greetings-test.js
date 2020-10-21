@@ -6,7 +6,7 @@ describe("Greetings Webapp Tests", function(){
 
     const pg = require("pg");
     const Pool = pg.Pool;
-    const connectionString = process.env.DATABASE_URL || 'postgresql://melissa:pg123@localhost:5432/users';
+    const connectionString = process.env.DATABASE_URL || 'tests://melissa:pg123@localhost:5432/users';
 	const pool = new Pool({
 		connectionString
     });
@@ -58,22 +58,34 @@ describe("Greetings Webapp Tests", function(){
     await assert.equal("Hallo, Keith!:)", msgResults)
 	})
 
-// 	it('should be able to greet more than 1 person', async function(){
-//
-//
-// 		await flow.languageSelector("Hayley", 'Latin')
-// 		await flow.languageSelector("Charl", 'Latin')
-// 		await flow.languageSelector("Kim", 'English')
-// 		await flow.languageSelector("Busi", 'Dutch')
-//
-// 		await assert.equal(4, await flow.getUser())
-// 	})
-//
-// it('should be able to duplicate a name', async function(){
-//
-//   await flow.languageSelector('Kim', 'Latin');
-//   await flow.languageSelector('Kim', 'Latin');
-//
-//   await assert.equal(2, await flow.getUser());
-// })
+	it('should be able to greet more than 1 person', async function(){
+		const flow = greetings(pool)
+
+
+		await flow.greetWorkFlow('Hayley', 'Latin')
+		await flow.greetWorkFlow("Charl", 'Latin')
+		await flow.greetWorkFlow("Kim", 'English')
+		await flow.greetWorkFlow("Busi", 'Dutch')
+
+		await assert.deepEqual(await flow.getCounter(), 4)
+	})
+
+it('should be able to duplicate a name', async function(){
+	const flow = greetings(pool)
+
+  await flow.greetWorkFlow('Kim', 'English');
+  await flow.greetWorkFlow('Kim', 'Latin');
+
+  await assert.equal(await flow.getCounter(), 1);
+})
+
+it('should be able to clear data', async function(){
+	const flow = greetings(pool)
+
+  await flow.getData('Kim', 'English');
+  await flow.getData('Hilda', 'Latin');
+	await flow.getData('Ben', 'Latin');
+
+  await assert.equal(await flow.deleteUsers(), undefined);
+})
 })

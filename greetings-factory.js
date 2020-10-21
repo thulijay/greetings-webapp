@@ -1,8 +1,8 @@
 module.exports =  function greetFactory(pool){
 
      function languageSelector(userCheck, selectLang){
-        console.log({selectLang}, selectLang === 'English');
-        
+        // console.log({selectLang}, selectLang === 'English');
+
         if(selectLang === 'English'){
             return 'Hello, ' + userCheck + '!' + ':)';
         }
@@ -17,8 +17,8 @@ module.exports =  function greetFactory(pool){
     const greetWorkFlow = async (name, language) => {
         const isGreeted = await getUser(name);
 
-        console.log({isGreeted}, '-------------------');
-        
+        // console.log({isGreeted},SELECT_QUERY '-------------------');
+
 
         if(isGreeted.rowCount > 0) {
             await updateUserCount(name);
@@ -41,7 +41,7 @@ module.exports =  function greetFactory(pool){
     }
 
     async function deleteUsers(){
-        const DELETE_QUERY = 'delete from users';
+      const DELETE_QUERY = 'delete from users';
         await pool.query(DELETE_QUERY);
     }
 
@@ -49,35 +49,41 @@ module.exports =  function greetFactory(pool){
         const SELECT_QUERY = 'select * from users';
       return await pool.query(SELECT_QUERY);
     }
-
     /**
-     * 
-     * @param {String} name - greeted name 
-     * @returns object
-     */
+        *
+        * @param {String} name - greeted name
+        * @returns object
+        */
+
     async function getUser(name){
-        const SELECT_QUERY = 'select * from users where user_name = $1';
+        const SELECT_QUERY = ('select * from users where user_name = $1') ;
       return await pool.query(SELECT_QUERY, [name]);
     }
 
-    function alertUser(greetingsX, solidGreet){
-        if(!greetingsX && !solidGreet){
-            return 'select a language & enter your name';
-        }
-        else if(!greetingsX){
-            return 'enter your name';
-        }
-        else if(!solidGreet){
-            return 'select language';
-        }
+    async function getCounter() {
+      const count = await pool.query ('select id from users')
+      return count.rowCount
     }
+
+    // function alertUser(greetingsX, solidGreet){
+    //     if(!greetingsX && !solidGreet){
+    //         return 'select a language & enter your name';
+    //     }
+    //     else if(!greetingsX){
+    //         return 'enter your name';
+    //     }
+    //     else if(!solidGreet){
+    //         return 'select language';
+    //     }
+    // }
 
     return {
         languageSelector,
-        alertUser,
+        // alertUser,
         getData,
         deleteUsers,
         greetWorkFlow,
-        getUser
+        getUser,
+        getCounter
     }
 }
