@@ -1,88 +1,79 @@
-const assert = require('assert');
-const greetings = require('../greetings-factory');
-const pg =require('pg');
-const Pool = pg.Pool;
+const assert = require('assert')
+const greetings = require('../greetings-factory')
+describe("Greetings Webapp Tests", function(){
 
-const INSERT_QUERY = 'insert into users(user_name, user_count) values ($1, $2)';
+	const flow = greetings()
 
-const connectionString = process.env.DATABASE_URL || 'postgresql://melissa:pg123@localhost:5432/users';
+    const pg = require("pg");
+    const Pool = pg.Pool;
+    const connectionString = process.env.DATABASE_URL || 'postgresql://melissa:pg123@localhost:5432/users';
+	const pool = new Pool({
+		connectionString
+    });
+    const INSERT_QUERY = "insert into users (user_name,user_count) values ($1, $2)";
 
-const pool = new pg.Pool({
-    connectionString
-});
-
-
-describe('Greetings-Webapp Tests', function(){
-    beforeEach(async function(){
-        await pool.query('delete from users;');
+    beforeEach(async function () {
+		await pool.query("delete from users");
     });
 
-    it('should be able to add a name', async function(){
-        await pool.query(INSERT_QUERY, ['melissa', 1]);
-        // await pool.query(INSERT_QUERY, ['james', 1]);
-        // await pool.query(INSERT_QUERY, ['champ', 1]);
+    it('should not return an empty name', async function() {
+    let msgResults =  await flow.languageSelector("");
 
-        const returnDb = await pool.query("select count(*) from users");
-    
-        assert.equal(1, returnDb.rows[0].count);
-    });
-
-    it('should be able to add more than one name', async function(){
-        await pool.query(INSERT_QUERY, ['troy', 1]);
-        await pool.query(INSERT_QUERY, ['rein', 1]);
-        await pool.query(INSERT_QUERY, ['curtley', 1])
-
-        const returnDb = await pool.query("select count(*) from users");
-
-        assert.equal(3, returnDb.rows[0].count);
-    });
-
-    it('should be able to return a duplicated name', async function(){
-        await pool.query(INSERT_QUERY, ['rebecca', 1]);
-        await pool.query(INSERT_QUERY, ['rebecca', 1]);
-
-        const returnDb = await pool.query('select count (*) from users');
-
-        assert.equal(2, returnDb.rows[0].count);
-    });
-});
-
-
-    describe('More Tests', function(){
-
-        beforeEach(async function(){
-            await pool.query('delete from users;');
-        });
-
-    it('should be able to reset data', async function(){
-        await pool.query(INSERT_QUERY, ['kim', 1]);
-        await pool.query(INSERT_QUERY, ['rebecca', 1]);
-        await pool.query(INSERT_QUERY, ['thembi', 1]);
-        await pool.query(INSERT_QUERY, ['troy', 1]);
-
-        const returnDb = await pool.query('select count (*) from users');
-
-        assert.deepEqual(4, returnDb.rows[0].count, []);
-    });
-
-    // it('should not return an empty entry', async function(){
-    //     await pool.query(INSERT_QUERY, ['', 0])
-
-    //     const returnDb = await pool.query('select count (*) from users');
-
-    //     assert.equal(undefined, returnDb.rows.count)
-    // });
-
-    it('should be able to greet user in English', async function(){
-        const INSERT_QUERY = 'insert into users(user_name) values ($1)';
-
-        await pool.query(INSERT_QUERY, ['kim']);
-
-        let language = "English";
-
-        const returnDb = await pool.query('select count (*) from users');
-
-        assert.equal('kim'[language], returnDb.rows.count);
+      await assert.equal(undefined, msgResults)
 
     })
+
+    it("should be undefined when a user enters their name without selecting a language", async function () {
+
+      assert.equal( undefined, await flow.languageSelector('Melissa', ''))
+
+	});
+
+  it("should be undefined when a user hasnt selected a language or entered their name ", async function () {
+
+    assert.equal( undefined, await flow.languageSelector('', ''))
+
+});
+
+	it('should be able to greet user in English and count the user', async function(){
+
+    let msgResults =  await flow.languageSelector("Sam", "English");
+
+    await assert.equal("Hello, Sam!:)", msgResults)
+
+  })
+
+  it('should be able to greet user in Latin and count the user', async function(){
+
+    let msgResults =  await flow.languageSelector("Kim", "Latin");
+
+    await assert.equal("Salve, Kim!:)", msgResults)
+
+})
+
+  it('should be able to greet user in Dutch and count the user', async function(){
+
+    let msgResults =  await flow.languageSelector("Keith", "Dutch");
+
+    await assert.equal("Hallo, Keith!:)", msgResults)
+	})
+
+// 	it('should be able to greet more than 1 person', async function(){
+//
+//
+// 		await flow.languageSelector("Hayley", 'Latin')
+// 		await flow.languageSelector("Charl", 'Latin')
+// 		await flow.languageSelector("Kim", 'English')
+// 		await flow.languageSelector("Busi", 'Dutch')
+//
+// 		await assert.equal(4, await flow.getUser())
+// 	})
+//
+// it('should be able to duplicate a name', async function(){
+//
+//   await flow.languageSelector('Kim', 'Latin');
+//   await flow.languageSelector('Kim', 'Latin');
+//
+//   await assert.equal(2, await flow.getUser());
+// })
 })
