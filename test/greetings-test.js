@@ -88,4 +88,12 @@ it('should be able to clear data', async function(){
 
   await assert.equal(await flow.deleteUsers(), undefined);
 })
+
+it('should  return empty string when there is no counter or name added',async function () {
+  var flow =  greetings(pool);
+
+
+  await  flow.languageSelector("", "");
+  assert.equal( await flow.getCounter(), 0)
+})
 })
